@@ -39,7 +39,7 @@ This lab is broken up into the following steps:
 
 1.1 In your browser highlight the following URL, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
 
-   ![stock_quote-api.yaml](../.gitbook/assets/images/generic/openshift-console.png)
+   ![stock_quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/stocktrader-cp4I/master/apic/stock-quote-api.yaml)
 
 ## Step 2: Import the OpenAPI definition file into API Manager
 
