@@ -94,6 +94,7 @@ After importing the existing API, the first step is to configure basic security 
 3.8 Click on the **target-url** property. Click **Add**.
 
 3.9 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
+
     https://stock-trader-quote.us-south.cf.appdomain.cloud
 
    ![Target URL](images/target-url.png)
