@@ -1,19 +1,18 @@
-# Lab - Create, deploy and test a new API using the API Connect Developer Toolkit in Cloud Pak for Integration
+# Lab - Create, deploy and test a new API using the API Connect Developer Toolkit
 
-In this lab you will create a new API using the OpenAPI definition of an existing RESTful web-service that  gets realtime stock quotes. You will then test the deployed API by deploying the *IBM Stock Trader* application which is a simple stock trading sample, written as a set of microservices.  The app allows you  to create various stock portfolios and buy and sell  shares of stock for a commission. It keeps track of each porfolio’s total value and its loyalty level, which affect the commission charged per transaction. The app uses the API definition that you will create to get realtime stock quotes.
+In this lab you will create a new API using the OpenAPI definition of an existing RESTful web-service that  gets realtime stock quotes. You will then test the deployed API by deploying the *IBM Stock Trader* application which is a simple stock trading sample, written as a set of microservices. The app uses the API definition that you will create to get realtime stock quotes.
 
 The architecture of the  app is shown below:
 
 ![Architecture diagram](images/architecture.png)
 
-The **portfolio** microservice sits at the center of the application. This microservice;
+* **Tradr** is a Node.js UI for the portfolio service
 
-* persists trade data  using JDBC to a MariaDB database
-* invokes the **stock-quote** service that invokes an API defined in API Connect in the public IBM Cloud to get stock quotes
-* calls the **trade-history** service to store trade data in a PostgreSQL database that can be quiered for reporting puposes.
-* calls the **trade-history** service to get aggregated historical trade data.
-
-**Tradr** is a Node.js UI for the portfolio service
+* The **portfolio** microservice sits at the center of the application. This microservice:
+   * persists trade data  using JDBC to a MariaDB database
+   * invokes the **stock-quote** service that invokes an API defined in API Connect in CP4I to get stock quotes
+   * calls the **trade-history** service to store trade data in a PostgreSQL database that can be queried for reporting purposes.
+   * calls the **trade-history** service to get aggregated historical trade data.
 
 
 This lab is broken up into the following steps:
@@ -38,7 +37,7 @@ This lab is broken up into the following steps:
 
 ## Step 1: Download the OpenAPI definition file for the external Stock Quote service
 
-1.1 In your browser highlight  the following URL, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
+1.1 In your browser highlight the following URL, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
 
    ![stock_quote-api.yaml](../.gitbook/assets/images/generic/openshift-console.png)
 
@@ -56,7 +55,7 @@ This lab is broken up into the following steps:
 
   ![Existing OpenAPI](images/existing-api.png)
 
-2.4 Now choose **stock-quote-api.yaml** fromyour local file system and click Next
+2.4 Now choose **stock-quote-api.yaml** fromyour local file system and click **Next**.
 
   ![Choose file](images/choose-file.png)
 
@@ -94,7 +93,8 @@ After importing the existing API, the first step is to configure basic security 
 
 3.8 Click on the **target-url** property. Click **Add**.
 
-3.9 Choose the **sandbox** catalog and for the URL copy and paste the following URL https://stock-trader-quote.us-south.cf.appdomain.cloud
+3.9 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
+    https://stock-trader-quote.us-south.cf.appdomain.cloud
 
    ![Target URL](images/target-url.png)
 
@@ -102,13 +102,13 @@ After importing the existing API, the first step is to configure basic security 
 
 ## Step 4: Test the API
 
-In the API designer, you have the ability to test the API immediately after creation in the Assemble view.
+In the API designer, you have the ability to test the API immediately after creation in the **Assemble** view.
 
 4.1 On the top Navigation, click **Assemble**.
 
   ![Assemble](images/assemble.png)
 
-4.2 Click **proxy** in the flow designer. Note the window on the right with the configuration. It calls the  **traget-url** with the same request path sent to API Connect endpoint.
+4.2 Click **proxy** in the flow designer. Note the window on the right with the configuration. It calls the **target-url** with the same request path sent to the API Connect endpoint.
 
   ![Proxy](images/proxy.png)   
 
@@ -224,9 +224,10 @@ oc get pods | grep -v deploy
 
 You will verify the configuration that you created that points at the API you created in API Connect.
 
-8.1 From the command line run the following script
+8.1 From the command line run the following script:
 
-```./showTradrURL.sh
+```
+./showTradrURL.sh
 ```
 
 8.2 Copy the URL that is output and access it with your browser
