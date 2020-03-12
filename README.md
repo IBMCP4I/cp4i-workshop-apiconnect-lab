@@ -31,7 +31,7 @@ This lab is broken up into the following steps:
 
 1. [Install the Stock Trader app](#step-7-install-the-stock-trader-app)
 
-1. [Verify that your API Connect API is being called successfully](#step-8-verify-that-your-api-connect-api-is-being-called-successfully)
+1. [Verify that the Stock Trader app is calling your API successfully](#step-8-verify-that-the-stock-trader-app-is-calling-your-api-successfully)
 
 1. [Summary](#summary)
 
@@ -221,7 +221,7 @@ oc get pods | grep -v deploy
 ```
   ![Create db tables](images/create-db-tables.png)
 
-## Step 8: Verify that the Stock Trader app is calling your API Connect API successfully
+## Step 8: Verify that the Stock Trader app is calling your API successfully
 
 You will verify the configuration that you created that points at the API you created in API Connect.
 
