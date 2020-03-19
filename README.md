@@ -37,9 +37,11 @@ This lab is broken up into the following steps:
 
 ## Step 1: Download the OpenAPI definition file for the external Stock Quote service
 
-1.1 In your browser highlight the following URL, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
+1.1 In your browser right click on  the following link, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
 
-   ![stock_quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/stocktrader-cp4I/master/apic/stock-quote-api.yaml)
+   ![stock-quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/stocktrader-cp4I/master/apic/stock-quote-api.yaml)
+
+
 
 ## Step 2: Import the OpenAPI definition file into API Manager
 
