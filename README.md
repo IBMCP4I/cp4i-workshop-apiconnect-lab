@@ -25,7 +25,7 @@ This lab is broken up into the following steps:
 
 1. [Test the API](#step-4-test-the-api)
 
-1. [Create a new OpenShift project for the Stock Trader app](#step-5-create-a-new-openshift-project-for-the-stock-trader-app)
+1. [Create a new OpenShift project for the Stock Trader app](#step-5-create-a-new-openshift-project-for-the-stock-trader-application)
 
 1. [Prepare for Installation](#step-6-prepare-for-installation)
 
