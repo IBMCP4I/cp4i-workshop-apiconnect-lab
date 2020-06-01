@@ -1,6 +1,6 @@
 # Lab - Create, deploy and test a new API using the API Connect Developer Toolkit
 
-In this lab you will create a new API using the OpenAPI definition of an existing RESTful web-service that  gets realtime stock quotes. You will then test the deployed API by deploying the *IBM Stock Trader* application which is a simple stock trading sample, written as a set of microservices. The app uses the API definition that you will create to get realtime stock quotes.
+In this lab you will create a new API using the OpenAPI definition of an existing RESTful web-service that  gets realtime stock quotes. You will then test the deployed API by deploying the *IBM Trader Lite* application which is a simple stock trading sample, written as a set of microservices. The app uses the API definition that you will create to get realtime stock quotes.
 
 The architecture of the  app is shown below:
 
@@ -25,13 +25,13 @@ This lab is broken up into the following steps:
 
 1. [Test the API](#step-4-test-the-api)
 
-1. [Create a new OpenShift project for the Stock Trader app](#step-5-create-a-new-openshift-project-for-the-stock-trader-application)
+1. [Create a new OpenShift project for the Trader Lite app](#step-5-create-a-new-openshift-project-for-the-trader-lite-application)
 
 1. [Prepare for Installation](#step-6-prepare-for-installation)
 
-1. [Install the Stock Trader app](#step-7-install-the-stock-trader-app)
+1. [Install the Trader Lite app](#step-7-install-the-trader-lite-app)
 
-1. [Verify that the Stock Trader app is calling your API successfully](#step-8-verify-that-the-stock-trader-app-is-calling-your-api-successfully)
+1. [Verify that the Trader Lite app is calling your API successfully](#step-8-verify-that-the-trader-lite-app-is-calling-your-api-successfully)
 
 1. [Summary](#summary)
 
@@ -173,64 +173,103 @@ oc new-project trader-$STUDENTID
 
 ## Step 6: Prepare for installation
 
-Like a typical  Kubernetes app, Stock Trader use secrets to  store sensitive data  needed by one  or more microservices to access external  services and other microservices. You'll run a script to store your API Connect endpoint and apikey as secrets that the Stock Trader application references to get this information.
-
 6.1 From the  IBM Cloud Shell terminal
 
 ```
-git clone https://github.com/IBMStockTraderLite/stocktrader-cp4i.git
+git clone https://github.com/IBMStockTraderLite/traderlite-cp4i.git
 ```
 
-6.2 Go to the directory required to run the setup scripts
+6.2 Go to the repo main directory required to run the setup scripts
 
 ```
-cd stocktrader-cp4i/scripts
+cd traderlite-cp4i
 ```
 
-6.3 Run the following command, substituting your API Connect endpoint URL and API Key that saved previously.
+6.3 Install the prerequisite subcharts (mongodb, mariadb, mq)
 
 ```
-./setupAPIConnectAccess.sh [YOUR API CONNECT EXTERNAL URL] [YOUR API KEY]
+helm dependency update traderlite
 ```
-  The output should look like the following
 
-  ![Setup API Connect Access](images/api-connect-access.png)
-
-## Step 7: Install the Stock Trader app
-
-You'll install Stock Trader using an OpenShift template.
-
-7.1 Run the following script
+6.4 Verify the output looks like the following:
 
 ```
-./initialInstall.sh
+$ helm dependency update traderlite
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "ibm" chart repository
+...Successfully got an update from the "ibmstable" chart repository
+...Successfully got an update from the "bitnami" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Saving 3 charts
+Downloading mariadb from repo https://charts.bitnami.com/bitnami/
+Downloading mongodb from repo https://charts.bitnami.com/bitnami/
+Downloading ibm-mqadvanced-server-dev from repo https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
+Deleting outdated charts
 ```
-7.2 Verify that the output looks like the following:
 
-  ![Initial install](images/initial-install.png)
+## Step 7: Install the Trader Lite app
 
-7.3 Wait for all the pods to start. Run the following command repeatedly until all the pods are in the *Ready* state as shown below
+You'll install Trader Lite using a Helm chart.
 
-```
-oc get pods | grep -v deploy
-```
-  ![Pods running](images/pods-running.png)
-
-7.4 Initialize the database pods by running the following command
+7.1 Go to the repo  directory required to run the setup scripts
 
 ```
-./createDbTables.sh
+cd scripts
 ```
-  ![Create db tables](images/create-db-tables.png)
 
-## Step 8: Verify that the Stock Trader app is calling your API successfully
+7.2 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
+
+```
+./initialInstall.sh [YOUR API CONNECT EXTERNAL URL] [YOUR API KEY]
+```
+7.3 Verify that the output looks like the following:
+
+```
+$  ./initialInstall.sh https://yoururl/ your_client_id
+Script being run from correct folder
+Validating student id  ...
+Installing Trader Lite Helm chart ...
+NAME: traderlite
+LAST DEPLOYED: Mon Jun  1 11:34:46 2020
+NAMESPACE: trader-user001
+STATUS: deployed
+REVISION: 1
+NOTES:
+Trader Lite V2.0 is deployed.
+
+Run  the following command to get the URL of  the applications's UI:
+ echo "http://"`oc get route traderlite-tradr  -o jsonpath='{.spec.host }'`"/tradr"
+Trader Lite Helm chart install successful
+Wait for all pods to be in the 'Ready' state before continuing
+```
+
+7.4 Wait for all the pods to start. Run the following command.  
+
+```
+oc get pods
+```
+Repeat the command  until all the pods are in the *Ready* state as shown below
+```
+$ oc get pods
+NAME                                        READY   STATUS    RESTARTS   AGE
+traderlite-mariadb-0                        1/1     Running   0          4m48s
+traderlite-mongodb-6c79bf9554-kd5z8         1/1     Running   0          4m48s
+traderlite-portfolio-5d774598fc-g4b2l       1/1     Running   0          4m48s
+traderlite-stock-quote-7965448598-lzwqh     1/1     Running   0          4m48s
+traderlite-trade-history-5648f749c4-5hbhq   1/1     Running   0          4m48s
+traderlite-tradr-6cd8d879f4-hbcfr
+```
+
+
+## Step 8: Verify that the Trader Lite app is calling your API successfully
 
 You will verify the configuration that you created that points at the API you created in API Connect.
 
 8.1 From the command line run the following script:
 
 ```
-./showTradrURL.sh
+./showTradrUrl.sh
 ```
 
 8.2 Copy the URL that is output and access it with your browser
@@ -251,5 +290,5 @@ Congratulations ! You successfully completed the following key steps in this lab
 * Created an API by importing an OpenAPI definition for an existing REST service.
 * Configured a  ClientID/API Key  for security set up a proxy to the existing API.
 * Tested the API in the API Connect developer toolkit.
-* Deployed the Stock Trader app and configured it to use the API you created.
-* Tested the Stock Trader app to make sure it successfully uses your API.
+* Deployed the Trader Lite app and configured it to use the API you created.
+* Tested the Trader Lite app to make sure it successfully uses your API.
