@@ -57,7 +57,7 @@ This lab is broken up into the following steps:
 
   ![Existing OpenAPI](images/existing-api.png)
 
-2.4 Now choose **stock-quote-api.yaml** fromyour local file system and click **Next**.
+2.4 Now choose **stock-quote-api.yaml** from your local file system and click **Next**.
 
   ![Choose file](images/choose-file.png)
 
@@ -73,35 +73,41 @@ This lab is broken up into the following steps:
 
 After importing the existing API, the first step is to configure basic security before exposing it to other developers. By creating a client key  you are able to identify the app using the services. Next, we will define the backend endpoints where the API is actually running. API Connect supports pointing to multiple backend endpoints to match your multiple build stage environments.
 
-3.1 In the Edit API screen click **Security Definitions**
+3.1 Scroll down in  the  Edit API screen and replace the **Host** address with `$(catalog.host)` to indicate that you want calls to the external API to go through API Connect.
 
-3.2 In the **Security Definition** section, click the **Add** button on the right. This will open a new view titled **API Security Definition**.
+  ![Catalog Host](images/catalog-host.png)   
 
-3.2 In the **Name** field, type `client-id`.
+3.2 Click **Save**
 
-3.3 Under **Type**, choose **API Key**. This will reveal additional settings.
+3.3 In the Edit API screen click **Security Definitions** in the left navigation
 
-3.4 For **Located In** choose **Header**. For **Key Type** choose **Client ID**. Your screen should look like the image below.
+3.4 In the **Security Definition** section, click the **Add** button on the right. This will open a new view titled **API Security Definition**.
+
+3.5 In the **Name** field, type `client-id`.
+
+3.6 Under **Type**, choose **API Key**. This will reveal additional settings.
+
+3.7 For **Located In** choose **Header**. For **Key Type** choose **Client ID**. Your screen should look like the image below.
 
   ![Edit API complete](images/edit-api-complete.png)   
 
-3.5 Click the **Save** button to return to the **Security Definitions** section.
+3.8 Click the **Save** button to return to the **Security Definitions** section.
 
-3.6 Click **Security** in the left menu. Click **Add**. Select the **client-id** as shown below and then click **Save**.
+3.9 Click **Security** in the left menu. Click **Add**. Select the **client-id** as shown below and then click **Save**.
 
   ![Security](images/security.png)
 
-3.7 Next you'll the define the endpoint for the external API. Click on **Properties** in the left menu.
+3.10 Next you'll the define the endpoint for the external API. Click on **Properties** in the left menu.
 
-3.8 Click on the **target-url** property. Click **Add**.
+3.11 Click on the **target-url** property. Click **Add**.
 
-3.9 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
+3.12 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
 
     https://stock-trader-quote.us-south.cf.appdomain.cloud
 
    ![Target URL](images/target-url.png)
 
-3.10 Click **Save** to complete the configuration.
+3.13 Click **Save** to complete the configuration.
 
 ## Step 4: Test the API
 
@@ -111,9 +117,13 @@ In the API designer, you have the ability to test the API immediately after crea
 
   ![Assemble](images/assemble.png)
 
-4.2 Click **proxy** in the flow designer. Note the window on the right with the configuration. It calls the **target-url** with the same request path sent to the API Connect endpoint.
+4.2 Click **invoke** in the flow designer. Note the window on the right with the configuration. The **invoke** node calls the **target-url** (ie the external service).
 
-  ![Proxy](images/proxy.png)   
+  ![Invoke](images/invoke.png)
+
+4.3 Modify the **URL** field to include the request path passed in by the caller as well by appending `$(request.path)` to teh **URL**.
+
+  ![Invoke edited](images/invoke-edited.png)   
 
 4.3 Click the play icon as indicated in the image below.
 
@@ -182,69 +192,51 @@ git clone https://github.com/IBMStockTraderLite/traderlite-cp4i.git
 6.2 Go to the repo main directory required to run the setup scripts
 
 ```
-cd traderlite-cp4i
+cd traderlite-cp4i/scripts
 ```
 
-6.3 Install the prerequisite subcharts (mongodb, mariadb, mq)
+6.3 Install the operator used to create the `TraderLite`  Custom Resource used to install the app.
 
 ```
-helm dependency update traderlite
+./installOperator.sh
 ```
 
-6.4 Verify the output looks like the following:
+6.4 Run the following command to get a list of running pods
 
 ```
-$ helm dependency update traderlite
-Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "ibm" chart repository
-...Successfully got an update from the "ibmstable" chart repository
-...Successfully got an update from the "bitnami" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈Happy Helming!⎈
-Saving 3 charts
-Downloading mariadb from repo https://charts.bitnami.com/bitnami/
-Downloading mongodb from repo https://charts.bitnami.com/bitnami/
-Downloading ibm-mqadvanced-server-dev from repo https://raw.githubusercontent.com/IBM/charts/master/repo/stable/
-Deleting outdated charts
+oc get pods
+```
+
+6.5 Verify the output shows the operator pod running:
+
+```
+$ oc get pods
+NAME                                   READY   STATUS    RESTARTS   AGE
+traderlite-operator-6ddd5c4774-l5dcd   1/1     Running   0          20s
 ```
 
 ## Step 7: Install the Trader Lite app
 
-You'll install Trader Lite using a Helm chart.
+You'll install Trader Lite using the Trader Lite operator.
 
-7.1 Go to the repo  directory required to run the setup scripts
-
-```
-cd scripts
-```
-
-7.2 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
+7.1 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
 
 ```
 ./initialInstall.sh [YOUR API CONNECT EXTERNAL URL] [YOUR API KEY]
 ```
-7.3 Verify that the output looks like the following:
+7.2 Verify that the output looks like the following:
 
 ```
 $  ./initialInstall.sh https://yoururl/ your_client_id
 Script being run from correct folder
 Validating student id  ...
-Installing Trader Lite Helm chart ...
-NAME: traderlite
-LAST DEPLOYED: Mon Jun  1 11:34:46 2020
-NAMESPACE: trader-user001
-STATUS: deployed
-REVISION: 1
-NOTES:
-Trader Lite V2.0 is deployed.
-
-Run  the following command to get the URL of  the applications's UI:
- echo "http://"`oc get route traderlite-tradr  -o jsonpath='{.spec.host }'`"/tradr"
-Trader Lite Helm chart install successful
+Installing Trader Lite using operator ...
+traderlite.operators.clouddragons.com/traderlite created
+Trader Lite install successful
 Wait for all pods to be in the 'Ready' state before continuing
 ```
 
-7.4 Wait for all the pods to start. Run the following command.  
+7.3 Wait for all the pods to start. Run the following command.  
 
 ```
 oc get pods
@@ -253,12 +245,13 @@ Repeat the command  until all the pods are in the *Ready* state as shown below
 ```
 $ oc get pods
 NAME                                        READY   STATUS    RESTARTS   AGE
-traderlite-mariadb-0                        1/1     Running   0          4m48s
-traderlite-mongodb-6c79bf9554-kd5z8         1/1     Running   0          4m48s
-traderlite-portfolio-5d774598fc-g4b2l       1/1     Running   0          4m48s
-traderlite-stock-quote-7965448598-lzwqh     1/1     Running   0          4m48s
-traderlite-trade-history-5648f749c4-5hbhq   1/1     Running   0          4m48s
-traderlite-tradr-6cd8d879f4-hbcfr
+traderlite-mariadb-0                        1/1     Running   0          42s
+traderlite-mongodb-fd7f6d55b-q54bl          1/1     Running   0          42s
+traderlite-operator-6ddd5c4774-l5dcd        1/1     Running   0          19h
+traderlite-portfolio-5d774598fc-tvpdh       1/1     Running   0          42s
+traderlite-stock-quote-7965448598-7b66t     1/1     Running   0          42s
+traderlite-trade-history-5648f749c4-gmnlm   1/1     Running   0          42s
+traderlite-tradr-6cd8d879f4-nxm66           1/1     Running   0          42s
 ```
 
 
