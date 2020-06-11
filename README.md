@@ -25,13 +25,15 @@ This lab is broken up into the following steps:
 
 1. [Test the API](#step-4-test-the-api)
 
-1. [Create a new OpenShift project for the Trader Lite app](#step-5-create-a-new-openshift-project-for-the-trader-lite-application)
+1. [Setup IBM Cloud Shell](#step-5-setup-ibm-cloud-shell)
 
-1. [Prepare for Installation](#step-6-prepare-for-installation)
+1. [Create a new OpenShift project for the Trader Lite app](#step-6-create-a-new-openshift-project-for-the-trader-lite-application)
 
-1. [Install the Trader Lite app](#step-7-install-the-trader-lite-app)
+1. [Prepare for Installation](#step-7-prepare-for-installation)
 
-1. [Verify that the Trader Lite app is calling your API successfully](#step-8-verify-that-the-trader-lite-app-is-calling-your-api-successfully)
+1. [Install the Trader Lite app](#step-8-install-the-trader-lite-app)
+
+1. [Verify that the Trader Lite app is calling your API successfully](#step-9-verify-that-the-trader-lite-app-is-calling-your-api-successfully)
 
 1. [Summary](#summary)
 
@@ -169,47 +171,72 @@ In the API designer, you have the ability to test the API immediately after crea
 
   ![Gateway URL](images/gateway-url.png)
 
-## Step 5: Create a new OpenShift project for the Stock Trader application
+## Step 5: Setup IBM Cloud Shell
 
-5.1 In the IBM Cloud Shell set an environment variable for the  *studentid* assigned to you by the instructors (e.g. **user001**)
+5.1 In a separate browser tab go to the OpenShift console URL provided by your instructor  for the cluster designated to run the Stock Trader Lite application for the workshop.
+
+5.2 Choose the *clouddragons-ldap* option and login with your cluster credentials
+
+  ![OpenShift login](images/clouddragons-ldap.png)
+
+5.3 Click on your username in the upper right and select **Copy Login Command***
+
+  ![Copy Login Command](images/copy-login-command.png)
+
+5.4 You are prompted to login to the OpenShift console again. Repeat the same login procedure above to login.
+
+5.5 Click the **Display Token** link.
+
+5.6 Copy the contents of the field **Log in with this token** to the clipboard. It provides a login command with a valid token for your username.
+
+5.7 In a separate browser tab go to the IBM Cloud URL [https://cloud.ibm.com](https://cloud.ibm.com) and log in with your **ibm.com** credentials.
+
+5.8 Click the icon for  the **IBM Cloud Shell** terminal to launch it
+
+   ![IBM Cloud Shell](images/ibm-cloud-shell.png)   
+
+## Step 6: Create a new OpenShift project for the Stock Trader Lite application
+
+6.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
 
 ```
 export STUDENTID=user???
 ```
+   ![Set STUDENTID](images/set-student-id.png)
 
-5.2 Create a new OpenShift project
+6.2 Create a new OpenShift project by running the following command
 
 ```
 oc new-project trader-$STUDENTID
 ```
 
-## Step 6: Prepare for installation
+## Step 7: Prepare for installation
 
-6.1 From the  IBM Cloud Shell terminal
+7.1 From the IBM Cloud Shell terminal run the following command
 
 ```
 git clone https://github.com/IBMStockTraderLite/traderlite-cp4i.git
 ```
 
-6.2 Go to the repo main directory required to run the setup scripts
+7.2 Go to the repo main directory required to run the setup scripts
 
 ```
 cd traderlite-cp4i/scripts
 ```
 
-6.3 Install the operator used to create the `TraderLite`  Custom Resource used to install the app.
+7.3 Install the operator used to create the `TraderLite` Custom Resource used to install the app.
 
 ```
 ./installOperator.sh
 ```
 
-6.4 Run the following command to get a list of running pods
+7.4 Run the following command to get a list of running pods
 
 ```
 oc get pods
 ```
 
-6.5 Verify the output shows the operator pod running:
+7.5 Verify the output shows the operator pod running:
 
 ```
 $ oc get pods
@@ -217,16 +244,16 @@ NAME                                   READY   STATUS    RESTARTS   AGE
 traderlite-operator-6ddd5c4774-l5dcd   1/1     Running   0          20s
 ```
 
-## Step 7: Install the Trader Lite app
+## Step 8: Install the Trader Lite app
 
 You'll install Trader Lite using the Trader Lite operator.
 
-7.1 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
+8.1 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
 
 ```
 ./initialInstall.sh [YOUR API CONNECT EXTERNAL URL] [YOUR API KEY]
 ```
-7.2 Verify that the output looks like the following:
+8.2 Verify that the output looks like the following:
 
 ```
 $  ./initialInstall.sh https://yoururl/ your_client_id
@@ -238,7 +265,7 @@ Trader Lite install successful
 Wait for all pods to be in the 'Ready' state before continuing
 ```
 
-7.3 Wait for all the pods to start. Run the following command.  
+8.3 Wait for all the pods to start. Run the following command.  
 
 ```
 oc get pods
@@ -257,23 +284,23 @@ traderlite-tradr-6cd8d879f4-nxm66           1/1     Running   0          42s
 ```
 
 
-## Step 8: Verify that the Trader Lite app is calling your API successfully
+## Step 9: Verify that the Trader Lite app is calling your API successfully
 
 You will verify the configuration that you created that points at the API you created in API Connect.
 
-8.1 From the command line run the following script:
+9.1 From the command line run the following script:
 
 ```
 ./showTradrUrl.sh
 ```
 
-8.2 Copy the URL that is output and access it with your browser
+9.2 Copy the URL that is output and access it with your browser
 
-8.3 Log in using the username `stock` and the password `trader`
+9.3 Log in using the username `stock` and the password `trader`
 
   ![Stock Trader Login](images/stock-trader-login.png)
 
-8.4 If the DJIA summary has data then you know that the API you created in API Connect is working !
+9.4 If the DJIA summary has data then you know that the API you created in API Connect is working !
 
   ![DJIA Summary Working](images/djia-success.png)
 
