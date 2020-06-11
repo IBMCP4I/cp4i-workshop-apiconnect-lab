@@ -195,6 +195,8 @@ In the API designer, you have the ability to test the API immediately after crea
 
    ![IBM Cloud Shell](images/ibm-cloud-shell.png)   
 
+5.9 Paste the *oc login* command in  the IBM Cloud Shell terminal 
+
 ## Step 6: Create a new OpenShift project for the Stock Trader Lite application
 
 6.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
