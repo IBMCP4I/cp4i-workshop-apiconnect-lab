@@ -39,7 +39,7 @@ This lab is broken up into the following steps:
 
 1.1 In your browser right click on  the following link, right click and select **Save Link As ...** from the context menu. Save the file *stock-quote-api.yaml* to  your local system.
 
-   [stock-quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/stocktrader-cp4I/master/apic/stock-quote-api.yaml)
+   [stock-quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/traderlite-cp4i/master/apic/stock-quote-api.yaml)
 
 
 
@@ -121,49 +121,51 @@ In the API designer, you have the ability to test the API immediately after crea
 
   ![Invoke](images/invoke.png)
 
-4.3 Modify the **URL** field to include the request path passed in by the caller as well by appending `$(request.path)` to teh **URL**.
+4.3 Modify the **URL** field to include the request path passed in by the caller as well by appending `$(request.path)` to the **URL**.
 
   ![Invoke edited](images/invoke-edited.png)   
 
-4.3 Click the play icon as indicated in the image below.
+4.3 Click **Save**
+
+4.4 Click the play icon as indicated in the image below.
 
   ![Play icon](images/play-icon.png)
 
-4.4 Click **Activate API** to publish the API to the gateway for testing.
+4.5 Click **Activate API** to publish the API to the gateway for testing.
 
   ![Activate API](images/activate-for-test.png)
 
-4.5 After the API is published, your screen should look like the image below.  
+4.6 After the API is published, your screen should look like the image below.  
 
   ![API Published](images/api-published.png)
 
-4.6 Under **Operation** choose get **/stock-quote/djia**.
+4.7 Under **Operation** choose get **/stock-quote/djia**.
 
-4.7 Note that your **client-id** is prefilled for you.
+4.8 Note that your **client-id** is prefilled for you.
 
-4.8 Scroll all the way to the bottom of the browser window and click **Invoke**.
+4.9 Scroll all the way to the bottom of the browser window and click **Invoke**.
 
   ![Invoke API](images/invoke-api.png)
 
-4.9 If this is the first test of the API, you may  see a certificate exception. Simply click on the URL and choose the option to proceed.
+4.10 If this is the first test of the API, you may  see a certificate exception. Simply click on the URL and choose the option to proceed.
 
-4.10 Go back to the test view and click **Invoke** again.
+4.11 Go back to the test view and click **Invoke** again.
 
-4.11 Now you should see a Response section with Status code 200 OK and the Body displaying the details of the Dow Industrial average.
+4.12 Now you should see a Response section with Status code 200 OK and the Body displaying the details of the Dow Industrial average.
 
   ![Return from API call](images/response.png)
 
-4.12 Scroll up in the test view until you see the **Client ID**. Copy the value to to a local text file so it can be used in the Stock Trader application later (**Note:** this is a shortcut to the regular process of publishing the API and then subscribing to it as a consumer).
+4.13 Scroll up in the test view until you see the **Client ID**. Copy the value to to a local text file so it can be used in the Stock Trader application later (**Note:** this is a shortcut to the regular process of publishing the API and then subscribing to it as a consumer).
 
   ![Copy Client ID](images/client-id.png)
 
-4.13 Next we'll get the endpoint for your API. Click on the **Home** icon (top left) and then click on the **Manage Catalogs** tile.
+4.14 Next we'll get the endpoint for your API. Click on the **Home** icon (top left) and then click on the **Manage Catalogs** tile.
 
   ![Manage Catalogs](images/manage-catalogs.png)
 
-4.14 Click on the **Sandbox** tile.
+4.15 Click on the **Sandbox** tile.
 
-4.15 Click on the **Settings** icon and then on **API Endpoints**. Copy the gateway URL and put it in the same file that you used for the **Client ID**
+4.16 Click on the **Settings** icon and then on **API Endpoints**. Copy the gateway URL and put it in the same file that you used for the **Client ID**
 
   ![Gateway URL](images/gateway-url.png)
 
