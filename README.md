@@ -44,30 +44,45 @@ This lab is broken up into the following steps:
    [stock-quote-api.yaml](https://raw.githubusercontent.com/IBMStockTraderLite/traderlite-cp4i/master/apic/stock-quote-api.yaml)
 
 
-
 ## Step 2: Import the OpenAPI definition file into API Manager
 
-2.1 Go to the browser tab with the API Manager Portal and click on the **Develop APIs and Products tile**
+2.1 In a new browser tab open the CP4I **Platform Home** URL provided to you by your instructors.
+
+2.2 Login with your *user???* credentials
+
+2.3 Click on **Skip Welcome**
+
+2.4 Click on **View instances** and then click the link for API Connect
+
+  ![Navigate to API Connect](images/nav-to-apic.png)
+
+2.5 Select the **Cloud Dragons LDAP** user repository
+
+  ![Cloud Dragons LDAP](images/apic-clouddragons-ldap.png)
+
+2.6 Login with your *user???* username and password
+
+2.7 Click on the **Develop APIs and Products tile**
 
    ![Develop APIs and Products tile](images/api-manager.png)
 
-2.2 Click **ADD->API**
+2.8 Click **ADD->API**
 
   ![Add API](images/add-api.png)
 
-2.3 On the next screen select **Existing OpenAPI** under **Import** and then click **Next**.
+2.9 On the next screen select **Existing OpenAPI** under **Import** and then click **Next**.
 
   ![Existing OpenAPI](images/existing-api.png)
 
-2.4 Now choose **stock-quote-api.yaml** from your local file system and click **Next**.
+2.10 Now choose **stock-quote-api.yaml** from your local file system and click **Next**.
 
   ![Choose file](images/choose-file.png)
 
-2.5 **Do not** select **Activate API**. Click **Next**
+2.11 **Do not** select **Activate API**. Click **Next**
 
   ![Choose file](images/activate-api.png)
 
-2.6 The API should be imported successfully as shown below. Click **Edit API**.
+2.12 The API should be imported successfully as shown below. Click **Edit API**.
 
   ![Edit API](images/edit-api.png)
 
@@ -175,27 +190,23 @@ In the API designer, you have the ability to test the API immediately after crea
 
 5.1 In a separate browser tab go to the OpenShift console URL provided by your instructor  for the cluster designated to run the Stock Trader Lite application for the workshop.
 
-5.2 Choose the *clouddragons-ldap* option and login with your cluster credentials
-
-  ![OpenShift login](images/clouddragons-ldap.png)
-
-5.3 Click on your username in the upper right and select **Copy Login Command***
+5.2 Click on your username in the upper right and select **Copy Login Command***
 
   ![Copy Login Command](images/copy-login-command.png)
 
-5.4 You are prompted to login to the OpenShift console again. Repeat the same login procedure above to login.
+5.3 You are prompted to login to the OpenShift console again. Repeat the same login procedure above to login.
 
-5.5 Click the **Display Token** link.
+5.4 Click the **Display Token** link.
 
-5.6 Copy the contents of the field **Log in with this token** to the clipboard. It provides a login command with a valid token for your username.
+5.5 Copy the contents of the field **Log in with this token** to the clipboard. It provides a login command with a valid token for your username.
 
-5.7 In a separate browser tab go to the IBM Cloud URL [https://cloud.ibm.com](https://cloud.ibm.com) and log in with your **ibm.com** credentials.
+5.6 In a separate browser tab go to the IBM Cloud URL [https://cloud.ibm.com](https://cloud.ibm.com) and log in with your **ibm.com** credentials.
 
-5.8 Click the icon for  the **IBM Cloud Shell** terminal to launch it
+5.7 Click the icon for  the **IBM Cloud Shell** terminal to launch it
 
    ![IBM Cloud Shell](images/ibm-cloud-shell.png)   
 
-5.9 Paste the *oc login* command in  the IBM Cloud Shell terminal 
+5.8 Paste the *oc login* command in  the IBM Cloud Shell terminal and run it
 
 ## Step 6: Create a new OpenShift project for the Stock Trader Lite application
 
@@ -214,22 +225,23 @@ oc new-project trader-$STUDENTID
 
 ## Step 7: Prepare for installation
 
-7.1 From the IBM Cloud Shell terminal run the following command
+7.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
+
+```
+export STUDENTID=user???
+```
+   ![Set STUDENTID](images/set-student-id.png)
+
+7.2 From the terminal run the following command
 
 ```
 git clone https://github.com/IBMStockTraderLite/traderlite-cp4i.git
 ```
 
-7.2 Go to the repo main directory required to run the setup scripts
+7.3 Go to the repo main directory required to run the setup scripts
 
 ```
 cd traderlite-cp4i/scripts
-```
-
-7.3 Install the operator used to create the `TraderLite` Custom Resource used to install the app.
-
-```
-./installOperator.sh
 ```
 
 7.4 Run the following command to get a list of running pods
