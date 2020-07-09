@@ -27,13 +27,11 @@ This lab is broken up into the following steps:
 
 1. [Setup IBM Cloud Shell](#step-5-setup-ibm-cloud-shell)
 
-1. [Create a new OpenShift project for the Trader Lite app](#step-6-create-a-new-openshift-project-for-the-trader-lite-application)
+1. [Prepare for Installation](#step-6-prepare-for-installation)
 
-1. [Prepare for Installation](#step-7-prepare-for-installation)
+1. [Install the Trader Lite app](#step-7-install-the-trader-lite-app)
 
-1. [Install the Trader Lite app](#step-8-install-the-trader-lite-app)
-
-1. [Verify that the Trader Lite app is calling your API successfully](#step-9-verify-that-the-trader-lite-app-is-calling-your-api-successfully)
+1. [Verify that the Trader Lite app is calling your API successfully](#step-8-verify-that-the-trader-lite-app-is-calling-your-api-successfully)
 
 1. [Summary](#summary)
 
@@ -104,27 +102,29 @@ After importing the existing API, the first step is to configure basic security 
 
 3.6 Under **Type**, choose **API Key**. This will reveal additional settings.
 
-3.7 For **Located In** choose **Header**. For **Key Type** choose **Client ID**. Your screen should look like the image below.
+3.7 For **Located In** choose **Header**. For **Key Type** choose **Client ID**.
+
+3.8 Enter `X-IBM-Client-Id` as the **Parameter Name**.  Your screen should now look like the image below.
 
   ![Edit API complete](images/edit-api-complete.png)   
 
-3.8 Click the **Save** button to return to the **Security Definitions** section.
+3.9 Click the **Save** button to return to the **Security Definitions** section.
 
-3.9 Click **Security** in the left menu. Click **Add**. Select the **client-id** as shown below and then click **Save**.
+3.10 Click **Security** in the left menu. Click **Add**. Select the **client-id** as shown below and then click **Save**.
 
   ![Security](images/security.png)
 
-3.10 Next you'll the define the endpoint for the external API. Click on **Properties** in the left menu.
+3.11 Next you'll the define the endpoint for the external API. Click on **Properties** in the left menu.
 
-3.11 Click on the **target-url** property. Click **Add**.
+3.12 Click on the **target-url** property. Click **Add**.
 
-3.12 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
+3.13 Choose the **sandbox** catalog and for the URL copy and paste the following URL:
 
     https://stock-trader-quote.us-south.cf.appdomain.cloud
 
    ![Target URL](images/target-url.png)
 
-3.13 Click **Save** to complete the configuration.
+3.14 Click **Save** to complete the configuration.
 
 ## Step 4: Test the API
 
@@ -168,7 +168,7 @@ In the API designer, you have the ability to test the API immediately after crea
 
 4.11 Go back to the test view and click **Invoke** again.
 
-4.12 Now you should see a Response section with Status code 200 OK and the Body displaying the details of the Dow Industrial average.
+4.12 Now you should see a Response section with Status code 200 OK and the Body displaying the details of the *Dow Jones Industrial Average*.
 
   ![Return from API call](images/response.png)
 
@@ -223,51 +223,51 @@ export STUDENTID=user???
 oc new-project trader-$STUDENTID
 ```
 
-## Step 7: Prepare for installation
+## Step 6: Prepare for installation
 
-7.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
+6.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
 
 ```
 export STUDENTID=user???
 ```
    ![Set STUDENTID](images/set-student-id.png)
 
-7.2 From the terminal run the following command
+6.2 From the terminal run the following command
 
 ```
 git clone https://github.com/IBMStockTraderLite/traderlite-cp4i.git
 ```
 
-7.3 Go to the repo main directory required to run the setup scripts
+6.3 Go to the repo main directory required to run the setup scripts
 
 ```
 cd traderlite-cp4i/scripts
 ```
 
-7.4 Run the following command to get a list of running pods
+6.4 Run the following command to get a list of running pods
 
 ```
 oc get pods
 ```
 
-7.5 Verify the output shows the operator pod running:
+6.5 Verify the output shows the Trader Lite operator pod running:
 
 ```
 $ oc get pods
 NAME                                   READY   STATUS    RESTARTS   AGE
-traderlite-operator-6ddd5c4774-l5dcd   1/1     Running   0          20s
+traderlite-operator-6ddd5c4774-l5dcd   1/1     Running   0          20m
 ```
 
-## Step 8: Install the Trader Lite app
+## Step 7: Install the Trader Lite app
 
 You'll install Trader Lite using the Trader Lite operator.
 
-8.1 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
+7.1 Run the following script, substituting your API Connect endpoint URL and API Key that you saved previously.
 
 ```
 ./initialInstall.sh [YOUR API CONNECT EXTERNAL URL] [YOUR API KEY]
 ```
-8.2 Verify that the output looks like the following:
+7.2 Verify that the output looks like the following:
 
 ```
 $  ./initialInstall.sh https://yoururl/ your_client_id
@@ -279,7 +279,7 @@ Trader Lite install successful
 Wait for all pods to be in the 'Ready' state before continuing
 ```
 
-8.3 Wait for all the pods to start. Run the following command.  
+7.3 Wait for all the pods to start. Run the following command.  
 
 ```
 oc get pods
@@ -298,23 +298,23 @@ traderlite-tradr-6cd8d879f4-nxm66           1/1     Running   0          42s
 ```
 
 
-## Step 9: Verify that the Trader Lite app is calling your API successfully
+## Step 8: Verify that the Trader Lite app is calling your API successfully
 
 You will verify the configuration that you created that points at the API you created in API Connect.
 
-9.1 From the command line run the following script:
+8.1 From the command line run the following script:
 
 ```
 ./showTradrUrl.sh
 ```
 
-9.2 Copy the URL that is output and access it with your browser
+8.2 Copy the URL that is output and access it with your browser
 
-9.3 Log in using the username `stock` and the password `trader`
+8.3 Log in using the username `stock` and the password `trader`
 
   ![Stock Trader Login](images/stock-trader-login.png)
 
-9.4 If the DJIA summary has data then you know that the API you created in API Connect is working !
+8.4 If the DJIA summary has data then you know that the API you created in API Connect is working !
 
   ![DJIA Summary Working](images/djia-success.png)
 
