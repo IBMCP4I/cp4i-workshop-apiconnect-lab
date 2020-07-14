@@ -102,7 +102,7 @@ After importing the existing API, the first step is to configure basic security 
 
 3.6 Under **Type**, choose **API Key**. This will reveal additional settings.
 
-3.7 For **Located In** choose **Header**. For **Key Type** choose **Client ID**.
+3.7 For **Located In** choose **Header**. For **Key Type** choose **Client ID**
 
 3.8 Enter `X-IBM-Client-Id` as the **Parameter Name**.  Your screen should now look like the image below.
 
@@ -114,7 +114,7 @@ After importing the existing API, the first step is to configure basic security 
 
   ![Security](images/security.png)
 
-3.11 Next you'll the define the endpoint for the external API. Click on **Properties** in the left menu.
+3.11 Next you'll define the endpoint for the external API. Click on **Properties** in the left menu.
 
 3.12 Click on the **target-url** property. Click **Add**.
 
@@ -190,7 +190,7 @@ In the API designer, you have the ability to test the API immediately after crea
 
 5.1 In a separate browser tab go to the OpenShift console URL provided by your instructor  for the cluster designated to run the Stock Trader Lite application for the workshop.
 
-5.2 Click on your username in the upper right and select **Copy Login Command***
+5.2 Click on your username in the upper right and select **Copy Login Command**
 
   ![Copy Login Command](images/copy-login-command.png)
 
@@ -208,20 +208,6 @@ In the API designer, you have the ability to test the API immediately after crea
 
 5.8 Paste the *oc login* command in  the IBM Cloud Shell terminal and run it
 
-## Step 6: Create a new OpenShift project for the Stock Trader Lite application
-
-6.1 In the IBM Cloud Shell terminal set an environment variable for the  *student id* assigned to you by the instructors (e.g. **user005**) by running the following command and replacing *user???* with your assigned *student id*.
-
-```
-export STUDENTID=user???
-```
-   ![Set STUDENTID](images/set-student-id.png)
-
-6.2 Create a new OpenShift project by running the following command
-
-```
-oc new-project trader-$STUDENTID
-```
 
 ## Step 6: Prepare for installation
 
